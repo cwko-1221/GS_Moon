@@ -6,6 +6,7 @@ import { TOWER_TYPES } from './game/types';
 import { CELL_SIZE } from './game/Map';
 import { questions } from './questions';
 import type { Question } from './questions';
+import { soundEngine } from './game/SoundEngine';
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -29,6 +30,7 @@ function App() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   
   const [buildTimeLeft, setBuildTimeLeft] = useState(30);
+  const [isMuted, setIsMuted] = useState(false);
 
   // Initialize Game Engine
   useEffect(() => {
@@ -90,12 +92,14 @@ function App() {
     setSelectedOption(index);
     if (index === currentQuestion.correctAnswerIndex) {
       setQuestionResult('correct');
+      soundEngine.playCorrectAnswer();
       setTimeout(() => {
         engineRef.current?.addMoney(100); // Reward for correct answer
         setShowQuestion(false);
       }, 1500);
     } else {
       setQuestionResult('wrong');
+      soundEngine.playWrongAnswer();
       setTimeout(() => {
         setShowQuestion(false);
       }, 2000);
@@ -144,6 +148,13 @@ function App() {
         <div className="stat health">HP: {gameState.health}</div>
         <div className="stat wave">WAVE: {gameState.wave}</div>
         <div className="stat money">$$: {gameState.money}</div>
+        <button 
+          className="btn mute-btn" 
+          onClick={() => { const m = soundEngine.toggleMute(); setIsMuted(m); }}
+          title={isMuted ? '開啟音效' : '關閉音效'}
+        >
+          {isMuted ? '🔇' : '🔊'}
+        </button>
       </div>
 
       <div className="game-area" onMouseMove={handleCanvasMouseMove}>

@@ -235,3 +235,19 @@
   transform: translate(-50%, -50%);
   border-radius: 50%;
 }
+
+.mute-btn {
+  padding: 0.4rem 0.8rem !important;
+  font-size: 1.3rem !important;
+  min-width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: #64748b !important;
+  transition: all 0.2s ease;
+}
+
+.mute-btn:hover {
+  border-color: #00f3ff !important;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+}

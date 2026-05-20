@@ -1,6 +1,7 @@
 import type { GameState, Enemy, Position } from './types';
 import { TOWER_TYPES } from './types';
 import { CANVAS_WIDTH, CANVAS_HEIGHT, CELL_SIZE, getPathPointsArray, getDistance, PATHS } from './Map';
+import { soundEngine } from './SoundEngine';
 
 export class GameEngine {
   private ctx: CanvasRenderingContext2D;
@@ -104,9 +105,11 @@ export class GameEngine {
       if (this.state.wave % 5 === 0) {
         this.enemiesToSpawn = 1; // Boss wave
         this.spawnInterval = 3.0;
+        soundEngine.playBossWarning();
       } else {
         this.enemiesToSpawn = 5 + this.state.wave * 2;
         this.spawnInterval = 1.0;
+        soundEngine.playWaveStart();
       }
       this.spawnTimer = 0;
       this.notifyStateChange();
@@ -139,6 +142,7 @@ export class GameEngine {
         level: 1,
         color: towerDef.color
       });
+      soundEngine.playTowerPlace();
       this.notifyStateChange();
       return true;
     }
@@ -238,9 +242,11 @@ export class GameEngine {
         // Reached end
         this.state.health -= 1;
         this.state.enemies.splice(i, 1);
+        soundEngine.playEnemyReachEnd();
         this.notifyStateChange();
         if (this.state.health <= 0) {
           this.state.phase = 'GAME_OVER';
+          soundEngine.playGameOver();
           this.notifyStateChange();
         }
         continue;
@@ -296,6 +302,11 @@ export class GameEngine {
             color: tower.color,
             splashRadius: tower.type === 'PLASMA' ? 100 : undefined
           });
+          // Play tower-specific shooting sound
+          if (tower.type === 'BASIC') soundEngine.playShootBasic();
+          else if (tower.type === 'LASER') soundEngine.playShootLaser();
+          else if (tower.type === 'SNIPER') soundEngine.playShootSniper();
+          else if (tower.type === 'PLASMA') soundEngine.playShootPlasma();
         }
       }
     }
@@ -340,6 +351,11 @@ export class GameEngine {
     // Clean up dead enemies
     for (let i = this.state.enemies.length - 1; i >= 0; i--) {
       if (this.state.enemies[i].hp <= 0) {
+        if (this.state.enemies[i].type === 'BOSS') {
+          soundEngine.playBossDeath();
+        } else {
+          soundEngine.playEnemyDeath();
+        }
         this.state.money += this.state.enemies[i].reward;
         this.state.enemies.splice(i, 1);
         this.notifyStateChange();
