@@ -1,0 +1,237 @@
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #020617;
+  color: #e2e8f0;
+  font-family: 'Courier New', Courier, monospace; /* Sci-fi feel */
+}
+
+.header {
+  width: 800px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid #1e293b;
+  border-bottom: 2px solid #00f3ff;
+  box-shadow: 0 4px 20px rgba(0, 243, 255, 0.1);
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.stat {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.stat.money {
+  color: #eab308;
+  text-shadow: 0 0 10px rgba(234, 179, 8, 0.5);
+}
+
+.stat.health {
+  color: #ff003c;
+  text-shadow: 0 0 10px rgba(255, 0, 60, 0.5);
+}
+
+.stat.wave {
+  color: #00f3ff;
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+
+.game-area {
+  position: relative;
+  width: 800px;
+  height: 600px;
+  border: 2px solid #1e293b;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 243, 255, 0.1);
+}
+
+.game-canvas {
+  display: block;
+}
+
+.controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  background: rgba(15, 23, 42, 0.9);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  backdrop-filter: blur(4px);
+}
+
+.btn {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #334155;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-primary {
+  border-color: #00f3ff;
+  color: #00f3ff;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+}
+
+.btn-primary:hover {
+  background: rgba(0, 243, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+}
+
+.btn-action {
+  border-color: #eab308;
+  color: #eab308;
+  box-shadow: 0 0 10px rgba(234, 179, 8, 0.2);
+}
+
+.btn-action:hover {
+  background: rgba(234, 179, 8, 0.1);
+  box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Modal styles for Q&A */
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid #00f3ff;
+  border-radius: 12px;
+  padding: 2.5rem;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 0 40px rgba(0, 243, 255, 0.15);
+  text-align: center;
+  animation: slideUp 0.3s ease-out;
+}
+
+.question-text {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #f8fafc;
+  line-height: 1.4;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.option-btn {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+  border-color: #00f3ff;
+  color: #fff;
+  background: rgba(0, 243, 255, 0.1);
+}
+
+.option-btn.correct {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.option-btn.wrong {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tower placement overlay */
+.placement-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Let clicks pass through to canvas for coordinates */
+  z-index: 5;
+}
+
+.placement-cursor {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
