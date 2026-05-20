@@ -19,7 +19,10 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 h1, h2, h3, p {

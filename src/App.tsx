@@ -10,7 +10,9 @@ import { soundEngine } from './game/SoundEngine';
 
 function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const gameAreaRef = useRef<HTMLDivElement>(null);
   const engineRef = useRef<GameEngine | null>(null);
+  const scaleRef = useRef(1);
   const [gameState, setGameState] = useState<GameState>({
     money: 100,
     health: 20,
@@ -50,6 +52,32 @@ function App() {
         engineRef.current = null;
       }
     };
+  }, []);
+
+  // Responsive scaling
+  useEffect(() => {
+    const updateScale = () => {
+      if (gameAreaRef.current) {
+        const container = gameAreaRef.current.parentElement;
+        if (!container) return;
+        const maxW = container.clientWidth - 16; // padding
+        const maxH = window.innerHeight * 0.65;
+        const scaleX = maxW / 800;
+        const scaleY = maxH / 600;
+        const scale = Math.min(scaleX, scaleY, 1.0);
+        scaleRef.current = scale;
+        gameAreaRef.current.style.transform = `scale(${scale})`;
+        gameAreaRef.current.style.transformOrigin = 'top center';
+        // Set wrapper height so controls position correctly
+        const wrapper = document.getElementById('game-wrapper');
+        if (wrapper) {
+          wrapper.style.height = `${600 * scale}px`;
+        }
+      }
+    };
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
   }, []);
 
   // Timer for building phase
@@ -106,23 +134,48 @@ function App() {
     }
   };
 
-  // Handle Tower Placement
+  // Handle Tower Placement (mouse + touch)
+  const getCanvasCoords = (clientX: number, clientY: number) => {
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return null;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    // Account for CSS scaling: rect already reflects scaled size
+    const scaleX = 800 / rect.width;
+    const scaleY = 600 / rect.height;
+    return { x: x * scaleX, y: y * scaleY };
+  };
+
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!selectedTowerType || !engineRef.current || gameState?.phase !== 'BUILDING') return;
-    
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (!rect) return;
+    const coords = getCanvasCoords(e.clientX, e.clientY);
+    if (!coords) return;
 
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const gridX = Math.floor(x / CELL_SIZE);
-    const gridY = Math.floor(y / CELL_SIZE);
+    const gridX = Math.floor(coords.x / CELL_SIZE);
+    const gridY = Math.floor(coords.y / CELL_SIZE);
 
     const success = engineRef.current.placeTower(gridX, gridY, selectedTowerType);
     if (success) {
-      // Keep selected or deselect? Let's keep it selected for multiple placements
-      // unless they run out of money
+      const nextMoney = gameState.money - TOWER_TYPES[selectedTowerType].cost;
+      if (nextMoney < TOWER_TYPES[selectedTowerType].cost) {
+        setSelectedTowerType(null);
+      }
+    }
+  };
+
+  const handleCanvasTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    if (!selectedTowerType || !engineRef.current || gameState?.phase !== 'BUILDING') return;
+    const touch = e.changedTouches[0];
+    if (!touch) return;
+    const coords = getCanvasCoords(touch.clientX, touch.clientY);
+    if (!coords) return;
+
+    const gridX = Math.floor(coords.x / CELL_SIZE);
+    const gridY = Math.floor(coords.y / CELL_SIZE);
+
+    const success = engineRef.current.placeTower(gridX, gridY, selectedTowerType);
+    if (success) {
       const nextMoney = gameState.money - TOWER_TYPES[selectedTowerType].cost;
       if (nextMoney < TOWER_TYPES[selectedTowerType].cost) {
         setSelectedTowerType(null);
@@ -132,12 +185,9 @@ function App() {
 
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (gameState?.phase === 'BUILDING') {
-      const rect = canvasRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      setMousePos({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-      });
+      const coords = getCanvasCoords(e.clientX, e.clientY);
+      if (!coords) return;
+      setMousePos(coords);
     }
   };
 
@@ -157,15 +207,17 @@ function App() {
         </button>
       </div>
 
-      <div className="game-area" onMouseMove={handleCanvasMouseMove}>
-        <canvas
-          ref={canvasRef}
-          width={800}
-          height={600}
-          className="game-canvas"
-          onClick={handleCanvasClick}
-          style={{ cursor: selectedTowerType ? 'crosshair' : 'default' }}
-        />
+      <div id="game-wrapper">
+        <div className="game-area" ref={gameAreaRef} onMouseMove={handleCanvasMouseMove}>
+          <canvas
+            ref={canvasRef}
+            width={800}
+            height={600}
+            className="game-canvas"
+            onClick={handleCanvasClick}
+            onTouchEnd={handleCanvasTouchEnd}
+            style={{ cursor: selectedTowerType ? 'crosshair' : 'default', touchAction: 'none' }}
+          />
 
         {/* Tower Placement Preview */}
         {selectedTowerType && gameState.phase === 'BUILDING' && (
@@ -228,6 +280,7 @@ function App() {
           </div>
         )}
       </div>
+    </div>
 
       <div className="controls">
         {gameState.phase === 'BUILDING' ? (
