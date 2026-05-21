@@ -8,222 +8,222 @@ export interface Question {
 export const questions: Question[] = [
   {
     id: 1,
-    question: "關於月球表面，下列哪項是正確的？\nWhich of the following is correct about the surface of the Moon?",
+    question: "我們的太陽系位於哪一個星系中？\nIn which galaxy is our Solar System located?",
     options: [
-      "平滑且充滿水 (Smooth and full of water)",
-      "粗糙且充滿隕石坑 (Rough and full of craters)",
-      "長滿植物 (Full of plants)",
-      "能夠自己發光 (Gives off its own light)"
+      "仙女座星系 (Andromeda Galaxy)",
+      "銀河系 (Milky Way Galaxy)",
+      "大麥哲倫星系 (Large Magellanic Cloud)",
+      "黑眼星系 (Black Eye Galaxy)"
     ],
     correctAnswerIndex: 1
   },
   {
     id: 2,
-    question: "月光是從哪裡來的？\nWhere does moonlight come from?",
+    question: "下列哪一種星體會自行發光發熱？\nWhich type of celestial body gives off heat and light?",
     options: [
-      "月球本身發出的光 (Light given off by the Moon itself)",
-      "地球反射的光 (Light reflected from the Earth)",
-      "太陽反射的光 (Light reflected from the Sun)",
-      "星星的光 (Light from the stars)"
+      "行星 (Planet)",
+      "衛星 (Satellite)",
+      "恆星 (Star)",
+      "小行星 (Asteroid)"
     ],
     correctAnswerIndex: 2
   },
   {
     id: 3,
-    question: "月球自轉一圈大約需要多少天？\nHow long does it take for the Moon to make one rotation?",
+    question: "太陽系中，哪一個是最小的行星？\nWhich is the smallest planet in the Solar System?",
     options: [
-      "1 天 (1 day)",
-      "15 天 (15 days)",
-      "24 天 (24 days)",
-      "27 天 (27 days)"
+      "火星 (Mars)",
+      "水星 (Mercury)",
+      "金星 (Venus)",
+      "地球 (Earth)"
     ],
-    correctAnswerIndex: 3
+    correctAnswerIndex: 1
   },
   {
     id: 4,
-    question: "月球繞地球公轉一圈大約需要多少天？\nHow long does it take for the Moon to complete one revolution around the Earth?",
+    question: "木星和火星之間主要分佈著什麼天體？\nWhat celestial bodies are mostly found between Mars and Jupiter?",
     options: [
-      "1 天 (1 day)",
-      "27 天 (27 days)",
-      "30 天 (30 days)",
-      "365 天 (365 days)"
+      "彗星 (Comets)",
+      "小行星 (Asteroids)",
+      "衛星 (Satellites)",
+      "恆星 (Stars)"
     ],
     correctAnswerIndex: 1
   },
   {
     id: 5,
-    question: "為什麼我們總是看到月球的同一面？\nWhy do we always see the same side of the Moon?",
+    question: "哪一顆行星表面呈現紅色，且到處都是沙丘？\nWhich planet has a reddish surface and sand dunes everywhere?",
     options: [
-      "因為月球不會自轉 (Because the Moon does not rotate)",
-      "因為月球不會公轉 (Because the Moon does not revolve)",
-      "因為月球自轉和公轉所需的時間相同 (Because the time for rotation and revolution is the same)",
-      "因為地球的引力阻擋了月球轉動 (Because Earth's gravity stops it from spinning)"
+      "火星 (Mars)",
+      "木星 (Jupiter)",
+      "土星 (Saturn)",
+      "金星 (Venus)"
     ],
-    correctAnswerIndex: 2
+    correctAnswerIndex: 0
   },
   {
     id: 6,
-    question: "滿月通常出現在農曆的哪一天？\nOn which day of a lunar month does a full moon usually appear?",
+    question: "地球的衛星是下列哪一個？\nWhich of the following is the satellite of the Earth?",
     options: [
-      "第 1 天 (The 1st day)",
-      "第 7 天 (The 7th day)",
-      "第 15 天 (The 15th day)",
-      "第 30 天 (The 30th day)"
+      "太陽 (Sun)",
+      "火星 (Mars)",
+      "月球 (Moon)",
+      "哈雷彗星 (Halley's Comet)"
     ],
     correctAnswerIndex: 2
   },
   {
     id: 7,
-    question: "一個月相週期大約持續多少天？\nHow long does a lunar cycle last?",
+    question: "下列關於行星的描述，哪一項是正確的？\nWhich of the following sentences about planets is correct?",
     options: [
-      "約 7 天 (About 7 days)",
-      "約 15 天 (About 15 days)",
-      "約 27 天 (About 27 days)",
-      "約 30 天 (About 30 days)"
+      "它們會自己發光 (They give off light.)",
+      "它們圍繞恆星公轉 (They revolve around stars.)",
+      "它們圍繞衛星公轉 (They revolve around satellites.)",
+      "它們由冰塊組成 (They are made of ice.)"
     ],
-    correctAnswerIndex: 3
+    correctAnswerIndex: 1
   },
   {
     id: 8,
-    question: "發生日食時，三個星體的排列順序是什麼？\nWhat is the alignment of the three celestial bodies during a solar eclipse?",
+    question: "哪一顆行星擁有寬闊且明亮的星環？\nWhich planet has wide and bright rings?",
     options: [
-      "太陽 - 地球 - 月球 (Sun - Earth - Moon)",
-      "地球 - 太陽 - 月球 (Earth - Sun - Moon)",
-      "太陽 - 月球 - 地球 (Sun - Moon - Earth)",
-      "月球 - 地球 - 太陽 (Moon - Earth - Sun)"
+      "天王星 (Uranus)",
+      "木星 (Jupiter)",
+      "土星 (Saturn)",
+      "海王星 (Neptune)"
     ],
     correctAnswerIndex: 2
   },
   {
     id: 9,
-    question: "發生月食時，哪個星體位於中間？\nWhich celestial body is in the middle during a lunar eclipse?",
+    question: "太陽系八大行星中，哪一顆距離太陽最遠？\nWhich of the eight planets in the Solar System is the farthest from the Sun?",
     options: [
-      "太陽 (Sun)",
-      "地球 (Earth)",
-      "月球 (Moon)",
-      "恆星 (A star)"
+      "海王星 (Neptune)",
+      "天王星 (Uranus)",
+      "木星 (Jupiter)",
+      "土星 (Saturn)"
     ],
-    correctAnswerIndex: 1
+    correctAnswerIndex: 0
   },
   {
     id: 10,
-    question: "觀看日食時，下列哪種方法是正確且安全的？\nWhich of the following is a correct and safe way to watch a solar eclipse?",
+    question: "彗星接近太陽時會發生什麼事？\nWhat happens when a comet gets close to the Sun?",
     options: [
-      "戴太陽眼鏡 (Wearing sunglasses)",
-      "使用望遠鏡直接觀看 (Watching directly through a telescope)",
-      "使用雙筒望遠鏡 (Watching through binoculars)",
-      "使用太陽濾波器 (Using a solar filter)"
+      "它會結冰 (It freezes.)",
+      "它會變成恆星 (It turns into a star.)",
+      "它會受熱並拖著發光的長尾巴 (It heats up and shows a long glowing tail.)",
+      "它會停止移動 (It stops moving.)"
     ],
-    correctAnswerIndex: 3
+    correctAnswerIndex: 2
   },
   {
     id: 11,
-    question: "為什麼不能戴太陽眼鏡觀看日食？\nWhy shouldn't we wear sunglasses to watch a solar eclipse?",
+    question: "地球大氣層主要由哪三種氣體組成？\nEarth's atmosphere is mainly made up of which three gases?",
     options: [
-      "看不清楚 (We cannot see clearly)",
-      "有些紫外線和紅外線仍會穿透並傷害眼睛 (Some ultraviolet and infrared rays can still pass through and hurt our eyes)",
-      "太陽眼鏡會反光 (Sunglasses will reflect light)",
-      "日食的顏色會改變 (The color of the eclipse will change)"
+      "氫氣、氧氣、二氧化碳 (Hydrogen, oxygen, carbon dioxide)",
+      "氮氣、氧氣、二氧化碳 (Nitrogen, oxygen, carbon dioxide)",
+      "氦氣、氮氣、氧氣 (Helium, nitrogen, oxygen)",
+      "甲烷、氧氣、二氧化碳 (Methane, oxygen, carbon dioxide)"
     ],
     correctAnswerIndex: 1
   },
   {
     id: 12,
-    question: "農曆初一時，我們在地球上能看到月亮嗎？\nCan we see the Moon from the Earth on the first day of a lunar month?",
+    question: "哪一顆行星擁有最高的表面溫度？\nWhich planet has the highest surface temperature?",
     options: [
-      "能，看到滿月 (Yes, we see a full moon)",
-      "能，看到半個月亮 (Yes, we see a half moon)",
-      "不能，因為月球被地球的影子遮住了 (No, because it is blocked by Earth's shadow)",
-      "不能，因為太陽光照在月球的背面 (No, because sunlight falls on the back of the Moon)"
+      "水星 (Mercury)",
+      "金星 (Venus)",
+      "火星 (Mars)",
+      "木星 (Jupiter)"
     ],
-    correctAnswerIndex: 3
+    correctAnswerIndex: 1
   },
   {
     id: 13,
-    question: "以下哪項特徵「不」屬於月球？\nWhich of the following features does NOT belong to the Moon?",
+    question: "太陽系八大行星中，哪一顆的體積最大且自轉最快？\nWhich is the largest planet and has the fastest rotation in the Solar System?",
     options: [
-      "表面粗糙 (Rough surface)",
-      "有植物生長 (Has plants growing on it)",
-      "充滿隕石坑 (Full of craters)",
-      "沒有水 (Has no water)"
+      "土星 (Saturn)",
+      "木星 (Jupiter)",
+      "天王星 (Uranus)",
+      "地球 (Earth)"
     ],
     correctAnswerIndex: 1
   },
   {
     id: 14,
-    question: "在日全食期間，哪一部分的太陽光被月球完全遮擋？\nDuring a total solar eclipse, what is completely blocked by the Moon?",
+    question: "彗星是由什麼物質組成的？\nWhat is a comet made of?",
     options: [
-      "到達地球的月光 (Moonlight reaching the Earth)",
-      "到達地球的太陽光 (Sunlight reaching the Earth)",
-      "到達月球的太陽光 (Sunlight reaching the Moon)",
-      "星星的光 (Starlight)"
+      "完全由金屬組成 (Only metal)",
+      "只有氣體 (Only gas)",
+      "冰、岩石和塵埃的混合物 (A chunk of ice, rock and dust)",
+      "液態水和泥土 (Liquid water and soil)"
+    ],
+    correctAnswerIndex: 2
+  },
+  {
+    id: 15,
+    question: "哪一顆行星表面大部分被海洋覆蓋，且有生物居住？\nWhich planet is mostly covered with oceans and has living things?",
+    options: [
+      "金星 (Venus)",
+      "地球 (Earth)",
+      "火星 (Mars)",
+      "木星 (Jupiter)"
     ],
     correctAnswerIndex: 1
   },
   {
-    id: 15,
-    question: "在月食期間，地球的影子會投射在哪裡？\nDuring a lunar eclipse, where does the shadow of the Earth fall?",
-    options: [
-      "太陽上 (On the Sun)",
-      "雲層上 (On the clouds)",
-      "月球上 (On the Moon)",
-      "太空中 (In space)"
-    ],
-    correctAnswerIndex: 2
-  },
-  {
     id: 16,
-    question: "使用望遠鏡觀看日食的安全方法是什麼？\nWhat is a safe way to use a telescope to watch a solar eclipse?",
+    question: "衛星 (Satellites) 會圍繞什麼天體公轉？\nWhat celestial bodies do satellites revolve around?",
     options: [
-      "透過鏡片看 (Looking through the lens)",
-      "加上墨鏡看 (Looking with sunglasses on)",
-      "將影像投影在白色紙板上 (Projecting an image on a piece of white cardboard)",
-      "在晚上的時候看 (Watching it at night)"
+      "行星 (Planets)",
+      "恆星 (Stars)",
+      "小行星 (Asteroids)",
+      "彗星 (Comets)"
     ],
-    correctAnswerIndex: 2
+    correctAnswerIndex: 0
   },
   {
     id: 17,
-    question: "月相變化的原因是什麼？\nWhat causes the phases of the Moon?",
+    question: "下列哪一個組合構成了「太陽系 (Solar System)」？\nWhat makes up the Solar System?",
     options: [
-      "雲層遮擋了月球 (Clouds blocking the Moon)",
-      "月球發光強度的變化 (Changes in the Moon's light brightness)",
-      "月球繞地球公轉，導致我們看到的受光面改變 (The Moon revolves around the Earth, changing the lit part we can see)",
-      "地球自轉造成的錯覺 (An illusion caused by Earth's rotation)"
+      "只有太陽和地球 (Only the Sun and the Earth)",
+      "所有宇宙中的星系 (All galaxies in the universe)",
+      "太陽、八大行星及其衛星 (The Sun, the eight planets and their satellites)",
+      "只有恆星和彗星 (Only stars and comets)"
     ],
     correctAnswerIndex: 2
   },
   {
     id: 18,
-    question: "日食發生時，地球上的所有地方都能看到嗎？\nCan a solar eclipse be seen from everywhere on Earth?",
+    question: "最著名的彗星之一叫做什麼名字？\nWhat is one of the most famous comets called?",
     options: [
-      "可以，所有人都能看到 (Yes, everyone can see it)",
-      "只有在月球陰影落下（投射）的特定區域才能看到 (No, only in specific areas where the Moon's shadow falls)",
-      "只有在晚上才能看到 (No, only at night)",
-      "只有在北半球能看到 (No, only in the Northern Hemisphere)"
+      "安德羅美達彗星 (Andromeda Comet)",
+      "哈雷彗星 (Halley's Comet)",
+      "阿波羅彗星 (Apollo Comet)",
+      "伽利略彗星 (Galileo Comet)"
     ],
     correctAnswerIndex: 1
   },
   {
     id: 19,
-    question: "地球繞太陽公轉一圈需要多長時間？\nHow long does it take for the Earth to complete one revolution around the Sun?",
+    question: "小行星 (Asteroids) 又被稱為什麼？\nWhat are asteroids also called?",
     options: [
-      "24 小時 (24 hours)",
-      "27 天 (27 days)",
-      "30 天 (30 days)",
-      "1 年 (1 year)"
+      "小恆星 (Minor stars)",
+      "小行星 (Minor planets)",
+      "流星 (Meteors)",
+      "小衛星 (Minor satellites)"
     ],
-    correctAnswerIndex: 3
+    correctAnswerIndex: 1
   },
   {
     id: 20,
-    question: "根據實驗，當光源（手電筒）關閉時，我們無法看到代表月球的乒乓球，這證明了什麼？\nIn the experiment, when the torch is switched off, we cannot see the table tennis ball representing the Moon. What does this prove?",
+    question: "太陽系八大行星中，距離太陽由近到遠排列，第三顆是哪一顆？\nWhich is the 3rd planet from the Sun in the Solar System?",
     options: [
-      "乒乓球太小了 (The ball is too small)",
-      "月球本身不會發光 (The Moon does not give off light)",
-      "月球被地球擋住了 (The Moon is blocked by the Earth)",
-      "月球表面是粗糙的 (The Moon's surface is rough)"
+      "金星 (Venus)",
+      "火星 (Mars)",
+      "地球 (Earth)",
+      "木星 (Jupiter)"
     ],
-    correctAnswerIndex: 1
+    correctAnswerIndex: 2
   }
 ];
