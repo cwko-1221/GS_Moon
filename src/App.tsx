@@ -103,7 +103,7 @@ function App() {
 
   // Handle Question Logic
   const handleEarnMoney = () => {
-    if (gameState?.phase !== 'BUILDING') return;
+    if (gameState?.phase === 'GAME_OVER') return;
     
     // Pick a random question
     const q = questions[Math.floor(Math.random() * questions.length)];
@@ -147,7 +147,7 @@ function App() {
   };
 
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!selectedTowerType || !engineRef.current || gameState?.phase !== 'BUILDING') return;
+    if (!selectedTowerType || !engineRef.current || gameState?.phase === 'GAME_OVER') return;
     const coords = getCanvasCoords(e.clientX, e.clientY);
     if (!coords) return;
 
@@ -165,7 +165,7 @@ function App() {
 
   const handleCanvasTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault();
-    if (!selectedTowerType || !engineRef.current || gameState?.phase !== 'BUILDING') return;
+    if (!selectedTowerType || !engineRef.current || gameState?.phase === 'GAME_OVER') return;
     const touch = e.changedTouches[0];
     if (!touch) return;
     const coords = getCanvasCoords(touch.clientX, touch.clientY);
@@ -184,7 +184,7 @@ function App() {
   };
 
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (gameState?.phase === 'BUILDING') {
+    if (gameState?.phase !== 'GAME_OVER') {
       const coords = getCanvasCoords(e.clientX, e.clientY);
       if (!coords) return;
       setMousePos(coords);
@@ -220,7 +220,7 @@ function App() {
           />
 
         {/* Tower Placement Preview */}
-        {selectedTowerType && gameState.phase === 'BUILDING' && (
+        {selectedTowerType && gameState.phase !== 'GAME_OVER' && (
           <div className="placement-overlay">
             <div 
               className="placement-cursor"
@@ -283,7 +283,7 @@ function App() {
     </div>
 
       <div className="controls">
-        {gameState.phase === 'BUILDING' ? (
+        {gameState.phase !== 'GAME_OVER' ? (
           <>
             <button className="btn btn-action" onClick={handleEarnMoney}>
               [ 賺取資金 (答題) ]
@@ -316,15 +316,18 @@ function App() {
             >
               電漿塔 ($ {TOWER_TYPES.PLASMA.cost})
             </button>
-            <button className="btn btn-primary" onClick={() => engineRef.current?.startWave()}>
-              &gt;&gt; 開始第 {gameState.wave} 波 ({buildTimeLeft}秒) &lt;&lt;
-            </button>
+            {gameState.phase === 'BUILDING' && (
+              <button className="btn btn-primary" onClick={() => engineRef.current?.startWave()}>
+                &gt;&gt; 開始第 {gameState.wave} 波 ({buildTimeLeft}秒) &lt;&lt;
+              </button>
+            )}
+            {gameState.phase === 'COMBAT' && (
+              <div style={{ color: '#ff003c', padding: '0.6rem', letterSpacing: '2px', fontWeight: 'bold', animation: 'fadeIn 0.5s ease' }}>
+                ⚔ 戰鬥中 - WAVE {gameState.wave}
+              </div>
+            )}
           </>
-        ) : (
-          <div style={{ color: '#00f3ff', padding: '0.8rem', letterSpacing: '2px', fontWeight: 'bold' }}>
-            !!! 戰鬥進行中 !!!
-          </div>
-        )}
+        ) : null}
       </div>
     </div>
   );

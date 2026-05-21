@@ -117,7 +117,7 @@ export class GameEngine {
   }
 
   public placeTower(gridX: number, gridY: number, type: 'BASIC' | 'LASER' | 'SNIPER' | 'PLASMA') {
-    if (this.state.phase !== 'BUILDING') return false;
+    if (this.state.phase === 'GAME_OVER') return false;
     
     // Check if on any path
     const isOnPath = PATHS.some(path => path.some(p => p.x === gridX && p.y === gridY));
