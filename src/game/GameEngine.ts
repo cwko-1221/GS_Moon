@@ -21,8 +21,8 @@ export class GameEngine {
     this.ctx = ctx;
     this.onStateChange = onStateChange;
     this.state = {
-      money: 80,
-      health: 15,
+      money: 150,
+      health: 20,
       wave: 1,
       phase: 'BUILDING',
       enemies: [],
@@ -107,7 +107,7 @@ export class GameEngine {
         this.spawnInterval = 3.0;
         soundEngine.playBossWarning();
       } else {
-        this.enemiesToSpawn = 7 + this.state.wave * 2;
+        this.enemiesToSpawn = 5 + this.state.wave * 2;
         this.spawnInterval = 0.8;
         soundEngine.playWaveStart();
       }
@@ -238,7 +238,7 @@ export class GameEngine {
         }
         
         // Scale enemy stats by wave
-        const hpMultiplier = 1 + (this.state.wave * 0.3);
+        const hpMultiplier = 1 + (this.state.wave * 0.2);
         
         let hp = 100 * hpMultiplier;
         let speed = 65;
@@ -309,7 +309,7 @@ export class GameEngine {
       
       // Earthquake logic: TANK and BOSS damage nearby towers while walking
       if (enemy.type === 'TANK' || enemy.type === 'BOSS') {
-        const damagePerSecond = enemy.type === 'BOSS' ? 15 : 5;
+        const damagePerSecond = enemy.type === 'BOSS' ? 8 : 3;
         const radius = enemy.type === 'BOSS' ? 150 : 80;
         const actualDamage = damagePerSecond * dt;
         

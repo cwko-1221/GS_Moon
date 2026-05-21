@@ -14,8 +14,8 @@ function App() {
   const engineRef = useRef<GameEngine | null>(null);
   const scaleRef = useRef(1);
   const [gameState, setGameState] = useState<GameState>({
-    money: 80,
-    health: 15,
+    money: 150,
+    health: 20,
     wave: 1,
     phase: 'BUILDING',
     enemies: [],
