@@ -122,7 +122,7 @@ function App() {
       setQuestionResult('correct');
       soundEngine.playCorrectAnswer();
       setTimeout(() => {
-        engineRef.current?.addMoney(100); // Reward for correct answer
+        engineRef.current?.addMoney(50); // Reward for correct answer
         setShowQuestion(false);
       }, 1500);
     } else {
@@ -274,7 +274,7 @@ function App() {
                   );
                 })}
               </div>
-              {questionResult === 'correct' && <div style={{ color: '#22c55e', marginTop: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>答對了！獲得 100 資金</div>}
+              {questionResult === 'correct' && <div style={{ color: '#22c55e', marginTop: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>答對了！獲得 50 資金</div>}
               {questionResult === 'wrong' && <div style={{ color: '#ef4444', marginTop: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>答錯了！答案是：{currentQuestion.options[currentQuestion.correctAnswerIndex]}</div>}
             </div>
           </div>
