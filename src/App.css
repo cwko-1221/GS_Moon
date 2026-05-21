@@ -273,6 +273,53 @@
   box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
 }
 
+/* Tower Info Panel */
+.tower-panel {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid #00f3ff;
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  margin-top: 0.5rem;
+  box-sizing: border-box;
+  animation: slideUp 0.2s ease-out;
+}
+
+.tower-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.4rem;
+}
+
+.tower-panel-stats {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 0.5rem;
+}
+
+.tower-panel-actions {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.btn-sell {
+  border-color: #ef4444;
+  color: #ef4444;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.2);
+}
+
+.btn-sell:hover {
+  background: rgba(239, 68, 68, 0.15);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+}
+
 /* ===== Responsive: Tablets & smaller screens ===== */
 @media (max-width: 850px) {
   .header {

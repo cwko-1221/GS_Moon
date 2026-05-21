@@ -21,8 +21,8 @@ export class GameEngine {
     this.ctx = ctx;
     this.onStateChange = onStateChange;
     this.state = {
-      money: 100,
-      health: 20,
+      money: 80,
+      health: 15,
       wave: 1,
       phase: 'BUILDING',
       enemies: [],
@@ -107,8 +107,8 @@ export class GameEngine {
         this.spawnInterval = 3.0;
         soundEngine.playBossWarning();
       } else {
-        this.enemiesToSpawn = 5 + this.state.wave * 2;
-        this.spawnInterval = 1.0;
+        this.enemiesToSpawn = 7 + this.state.wave * 2;
+        this.spawnInterval = 0.8;
         soundEngine.playWaveStart();
       }
       this.spawnTimer = 0;
@@ -140,13 +140,54 @@ export class GameEngine {
         fireRate: towerDef.fireRate,
         lastFired: 0,
         level: 1,
-        color: towerDef.color
+        color: towerDef.color,
+        totalCost: towerDef.cost,
+        hp: towerDef.baseHp,
+        maxHp: towerDef.baseHp
       });
       soundEngine.playTowerPlace();
       this.notifyStateChange();
       return true;
     }
     return false;
+  }
+
+  public upgradeTower(towerId: string): boolean {
+    const tower = this.state.towers.find(t => t.id === towerId);
+    if (!tower) return false;
+    
+    const towerDef = TOWER_TYPES[tower.type];
+    if (tower.level >= towerDef.maxLevel) return false;
+    if (this.state.money < towerDef.upgradeCost) return false;
+    
+    this.state.money -= towerDef.upgradeCost;
+    tower.level++;
+    tower.damage = Math.round(towerDef.damage * (1 + (tower.level - 1) * 0.4));
+    tower.range = Math.round(towerDef.range * (1 + (tower.level - 1) * 0.1));
+    tower.fireRate = towerDef.fireRate * (1 + (tower.level - 1) * 0.15);
+    
+    // Increase maxHp on upgrade and heal slightly
+    tower.maxHp = Math.round(towerDef.baseHp * (1 + (tower.level - 1) * 0.3));
+    tower.hp = Math.min(tower.maxHp, tower.hp + (tower.maxHp - tower.hp) * 0.5); // Heal 50% of missing hp on upgrade
+    
+    tower.totalCost += towerDef.upgradeCost;
+    
+    soundEngine.playTowerPlace();
+    this.notifyStateChange();
+    return true;
+  }
+
+  public sellTower(towerId: string): number {
+    const idx = this.state.towers.findIndex(t => t.id === towerId);
+    if (idx === -1) return 0;
+    
+    const tower = this.state.towers[idx];
+    const refund = Math.floor(tower.totalCost * 0.5);
+    this.state.money += refund;
+    this.state.towers.splice(idx, 1);
+    
+    this.notifyStateChange();
+    return refund;
   }
 
   private loop = (time: number) => {
@@ -197,23 +238,23 @@ export class GameEngine {
         }
         
         // Scale enemy stats by wave
-        const hpMultiplier = 1 + (this.state.wave * 0.2);
+        const hpMultiplier = 1 + (this.state.wave * 0.3);
         
         let hp = 100 * hpMultiplier;
-        let speed = 60;
+        let speed = 65;
         let reward = 5;
         
         if (type === 'FAST') {
            hp = 50 * hpMultiplier;
-           speed = 120;
+           speed = 130;
            reward = 8;
         } else if (type === 'TANK') {
-           hp = 250 * hpMultiplier;
-           speed = 40;
+           hp = 300 * hpMultiplier;
+           speed = 42;
            reward = 15;
         } else if (type === 'BOSS') {
-           hp = 1500 * hpMultiplier;
-           speed = 30;
+           hp = 2000 * hpMultiplier;
+           speed = 32;
            reward = 500; // Big reward for defeating boss
         }
         
@@ -264,6 +305,28 @@ export class GameEngine {
       } else {
         enemy.x += (dx / dist) * moveAmount;
         enemy.y += (dy / dist) * moveAmount;
+      }
+      
+      // Earthquake logic: TANK and BOSS damage nearby towers while walking
+      if (enemy.type === 'TANK' || enemy.type === 'BOSS') {
+        const damagePerSecond = enemy.type === 'BOSS' ? 15 : 5;
+        const radius = enemy.type === 'BOSS' ? 150 : 80;
+        const actualDamage = damagePerSecond * dt;
+        
+        for(let j = this.state.towers.length - 1; j >= 0; j--) {
+          const tower = this.state.towers[j];
+          const px = tower.x * 40 + 20; // 40 is CELL_SIZE, 20 is half
+          const py = tower.y * 40 + 20;
+          const distToTower = Math.sqrt((px - enemy.x)**2 + (py - enemy.y)**2);
+          
+          if (distToTower <= radius) {
+            tower.hp -= actualDamage;
+            if (tower.hp <= 0) {
+               // Destroy tower
+               this.state.towers.splice(j, 1);
+            }
+          }
+        }
       }
     }
   }
@@ -460,6 +523,27 @@ export class GameEngine {
         this.ctx.shadowColor = tower.color;
         this.ctx.fill();
         this.ctx.shadowBlur = 0; // Reset
+      }
+
+      // Draw level indicator
+      if (tower.level > 1) {
+        this.ctx.fillStyle = '#fbbf24';
+        this.ctx.font = 'bold 10px monospace';
+        this.ctx.textAlign = 'center';
+        this.ctx.fillText(`Lv${tower.level}`, px, py + CELL_SIZE / 2 + 10);
+      }
+
+      // Draw HP bar if damaged
+      if (tower.hp < tower.maxHp) {
+        const barWidth = 30;
+        const barHeight = 4;
+        const hpPercent = Math.max(0, tower.hp / tower.maxHp);
+        
+        this.ctx.fillStyle = '#1e293b';
+        this.ctx.fillRect(px - barWidth / 2, py - CELL_SIZE / 2 - 8, barWidth, barHeight);
+        
+        this.ctx.fillStyle = hpPercent > 0.5 ? '#22c55e' : hpPercent > 0.25 ? '#eab308' : '#ef4444';
+        this.ctx.fillRect(px - barWidth / 2, py - CELL_SIZE / 2 - 8, barWidth * hpPercent, barHeight);
       }
     }
   }

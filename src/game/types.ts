@@ -27,6 +27,9 @@ export interface Tower {
   lastFired: number; // Timestamp
   level: number;
   color: string;
+  totalCost: number; // Total money invested (for sell refund)
+  hp: number;
+  maxHp: number;
 }
 
 export interface Bullet {
@@ -53,30 +56,42 @@ export interface GameState {
 export const TOWER_TYPES = {
   BASIC: {
     cost: 50,
+    upgradeCost: 40,
+    maxLevel: 5,
     range: 120,
     damage: 20,
     fireRate: 1.5,
-    color: '#00f3ff'
+    color: '#00f3ff',
+    baseHp: 100
   },
   LASER: {
     cost: 150,
-    range: 200,
-    damage: 5, // Low damage but high fire rate
-    fireRate: 10,
-    color: '#ff003c'
+    upgradeCost: 100,
+    maxLevel: 5,
+    range: 180,
+    damage: 4,
+    fireRate: 6,
+    color: '#ff003c',
+    baseHp: 150
   },
   SNIPER: {
     cost: 300,
+    upgradeCost: 200,
+    maxLevel: 5,
     range: 400,
-    damage: 150, // Massive damage
-    fireRate: 0.3, // Very slow
-    color: '#eab308'
+    damage: 150,
+    fireRate: 0.3,
+    color: '#eab308',
+    baseHp: 80
   },
   PLASMA: {
     cost: 400,
+    upgradeCost: 250,
+    maxLevel: 5,
     range: 150,
     damage: 40,
     fireRate: 1.0,
-    color: '#a855f7' // Purple
+    color: '#a855f7',
+    baseHp: 200
   }
 };

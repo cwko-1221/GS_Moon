@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { GameEngine } from './game/GameEngine';
-import type { GameState } from './game/types';
+import type { GameState, Tower } from './game/types';
 import { TOWER_TYPES } from './game/types';
 import { CELL_SIZE } from './game/Map';
 import { questions } from './questions';
@@ -14,8 +14,8 @@ function App() {
   const engineRef = useRef<GameEngine | null>(null);
   const scaleRef = useRef(1);
   const [gameState, setGameState] = useState<GameState>({
-    money: 100,
-    health: 20,
+    money: 80,
+    health: 15,
     wave: 1,
     phase: 'BUILDING',
     enemies: [],
@@ -33,6 +33,9 @@ function App() {
   
   const [buildTimeLeft, setBuildTimeLeft] = useState(30);
   const [isMuted, setIsMuted] = useState(false);
+  const [selectedTowerId, setSelectedTowerId] = useState<string | null>(null);
+
+  const selectedTower: Tower | undefined = gameState.towers.find(t => t.id === selectedTowerId);
 
   // Initialize Game Engine
   useEffect(() => {
@@ -147,13 +150,26 @@ function App() {
   };
 
   const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!selectedTowerType || !engineRef.current || gameState?.phase === 'GAME_OVER') return;
+    if (!engineRef.current || gameState?.phase === 'GAME_OVER') return;
     const coords = getCanvasCoords(e.clientX, e.clientY);
     if (!coords) return;
 
     const gridX = Math.floor(coords.x / CELL_SIZE);
     const gridY = Math.floor(coords.y / CELL_SIZE);
 
+    // If no tower type selected, check if clicking on existing tower
+    if (!selectedTowerType) {
+      const clickedTower = gameState.towers.find(t => t.x === gridX && t.y === gridY);
+      if (clickedTower) {
+        setSelectedTowerId(clickedTower.id === selectedTowerId ? null : clickedTower.id);
+      } else {
+        setSelectedTowerId(null);
+      }
+      return;
+    }
+
+    // Place tower
+    setSelectedTowerId(null);
     const success = engineRef.current.placeTower(gridX, gridY, selectedTowerType);
     if (success) {
       const nextMoney = gameState.money - TOWER_TYPES[selectedTowerType].cost;
@@ -165,7 +181,7 @@ function App() {
 
   const handleCanvasTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault();
-    if (!selectedTowerType || !engineRef.current || gameState?.phase === 'GAME_OVER') return;
+    if (!engineRef.current || gameState?.phase === 'GAME_OVER') return;
     const touch = e.changedTouches[0];
     if (!touch) return;
     const coords = getCanvasCoords(touch.clientX, touch.clientY);
@@ -174,6 +190,17 @@ function App() {
     const gridX = Math.floor(coords.x / CELL_SIZE);
     const gridY = Math.floor(coords.y / CELL_SIZE);
 
+    if (!selectedTowerType) {
+      const clickedTower = gameState.towers.find(t => t.x === gridX && t.y === gridY);
+      if (clickedTower) {
+        setSelectedTowerId(clickedTower.id === selectedTowerId ? null : clickedTower.id);
+      } else {
+        setSelectedTowerId(null);
+      }
+      return;
+    }
+
+    setSelectedTowerId(null);
     const success = engineRef.current.placeTower(gridX, gridY, selectedTowerType);
     if (success) {
       const nextMoney = gameState.money - TOWER_TYPES[selectedTowerType].cost;
@@ -329,6 +356,49 @@ function App() {
           </>
         ) : null}
       </div>
+
+      {/* Tower Info Panel (Upgrade / Sell) */}
+      {selectedTower && gameState.phase !== 'GAME_OVER' && (
+        <div className="tower-panel">
+          <div className="tower-panel-header">
+            <span style={{ color: selectedTower.color }}>
+              {selectedTower.type === 'BASIC' ? '機槍塔' : selectedTower.type === 'LASER' ? '雷射塔' : selectedTower.type === 'SNIPER' ? '狙擊塔' : '電漿塔'}
+            </span>
+            <span style={{ color: '#fbbf24' }}> Lv.{selectedTower.level}</span>
+            <button className="btn" style={{ padding: '0.2rem 0.5rem', fontSize: '0.7rem', marginLeft: 'auto' }} onClick={() => setSelectedTowerId(null)}>✕</button>
+          </div>
+          <div className="tower-panel-stats">
+            <span>生命: {Math.ceil(selectedTower.hp)}/{selectedTower.maxHp}</span>
+            <span>傷害: {selectedTower.damage}</span>
+            <span>範圍: {selectedTower.range}</span>
+            <span>射速: {selectedTower.fireRate.toFixed(1)}/s</span>
+          </div>
+          <div className="tower-panel-actions">
+            {selectedTower.level < TOWER_TYPES[selectedTower.type].maxLevel ? (
+              <button
+                className="btn btn-primary"
+                disabled={gameState.money < TOWER_TYPES[selectedTower.type].upgradeCost}
+                onClick={() => {
+                  engineRef.current?.upgradeTower(selectedTower.id);
+                }}
+              >
+                ⬆ 升級 (${TOWER_TYPES[selectedTower.type].upgradeCost})
+              </button>
+            ) : (
+              <span style={{ color: '#fbbf24', fontSize: '0.85rem' }}>★ 已滿級</span>
+            )}
+            <button
+              className="btn btn-sell"
+              onClick={() => {
+                engineRef.current?.sellTower(selectedTower.id);
+                setSelectedTowerId(null);
+              }}
+            >
+              ♻ 拆除 (+${Math.floor(selectedTower.totalCost * 0.5)})
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
