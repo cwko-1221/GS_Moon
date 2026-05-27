@@ -351,6 +351,60 @@ export class SoundEngine {
     osc.start(now);
     osc.stop(now + 0.15);
   }
+
+  public playNuclearBomb() {
+    this.ensureContext();
+    if (!this.ctx || !this.masterGain) return;
+    const now = this.ctx.currentTime;
+
+    // Massive noise burst
+    const bufferSize = this.ctx.sampleRate * 2.5;
+    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 0.3);
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = noiseBuffer;
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(4000, now);
+    filter.frequency.exponentialRampToValueAtTime(80, now + 2.5);
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.6, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(this.masterGain);
+    noise.start(now);
+    noise.stop(now + 2.5);
+
+    // Deep sub-bass rumble
+    const sub = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+    sub.type = 'sine';
+    sub.frequency.setValueAtTime(60, now);
+    sub.frequency.exponentialRampToValueAtTime(15, now + 1.5);
+    subGain.gain.setValueAtTime(0.5, now);
+    subGain.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
+    sub.connect(subGain);
+    subGain.connect(this.masterGain);
+    sub.start(now);
+    sub.stop(now + 1.5);
+
+    // High pitch whine then cut
+    const whine = this.ctx.createOscillator();
+    const whineGain = this.ctx.createGain();
+    whine.type = 'sawtooth';
+    whine.frequency.setValueAtTime(2000, now);
+    whine.frequency.exponentialRampToValueAtTime(100, now + 0.5);
+    whineGain.gain.setValueAtTime(0.2, now);
+    whineGain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    whine.connect(whineGain);
+    whineGain.connect(this.masterGain);
+    whine.start(now);
+    whine.stop(now + 0.5);
+  }
 }
 
 // Singleton instance

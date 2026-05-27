@@ -320,6 +320,33 @@
   box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
 }
 
+.btn-nuke {
+  background: rgba(220, 38, 38, 0.15);
+  border-color: #ef4444;
+  color: #f87171;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+  font-weight: bold;
+  animation: pulse-nuke 1.5s infinite alternate;
+}
+
+.btn-nuke:hover {
+  background: rgba(220, 38, 38, 0.3);
+  border-color: #f87171;
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.7);
+}
+
+@keyframes pulse-nuke {
+  0% {
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+    border-color: #ef4444;
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.8), inset 0 0 8px rgba(239, 68, 68, 0.4);
+    border-color: #f87171;
+  }
+}
+
 /* ===== Responsive: Tablets & smaller screens ===== */
 @media (max-width: 850px) {
   .header {

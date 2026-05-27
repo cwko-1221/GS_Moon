@@ -354,6 +354,18 @@ function App() {
                 ⚔ 戰鬥中 - WAVE {gameState.wave}
               </div>
             )}
+            {gameState.wave >= 5 && (
+              <button 
+                className="btn btn-nuke" 
+                onClick={() => {
+                  if (window.confirm("確定要發動核彈嗎？這會摧毀畫面上所有的防禦塔和怪物！\nAre you sure you want to launch the nuclear bomb? This will destroy all towers and enemies on screen!")) {
+                    engineRef.current?.triggerNuclearBomb();
+                  }
+                }}
+              >
+                ☢ 核彈攻擊 (NUCLEAR BOMB) ☢
+              </button>
+            )}
           </>
         ) : null}
       </div>

@@ -16,6 +16,9 @@ export class GameEngine {
   private spawnTimer: number = 0;
   private spawnInterval: number = 1.0; // seconds
   private images: Record<string, HTMLCanvasElement> = {};
+  private nukeParticles: { x: number; y: number; vx: number; vy: number; r: number; alpha: number; color: string }[] = [];
+  private nukeFlashAlpha: number = 0;
+  private nukeActive: boolean = false;
 
   constructor(ctx: CanvasRenderingContext2D, onStateChange: (state: GameState) => void) {
     this.ctx = ctx;
@@ -190,6 +193,38 @@ export class GameEngine {
     return refund;
   }
 
+  public triggerNuclearBomb(): void {
+    if (this.nukeActive) return;
+    soundEngine.playNuclearBomb();
+    
+    // Destroy all enemies immediately
+    this.state.enemies = [];
+    this.state.bullets = [];
+    // Destroy all towers
+    this.state.towers = [];
+    this.enemiesToSpawn = 0;
+    
+    // Create explosion particles
+    this.nukeFlashAlpha = 1.0;
+    this.nukeActive = true;
+    this.nukeParticles = [];
+    const colors = ['#ff4500', '#ff8c00', '#ffd700', '#ffffff', '#ff6347', '#ff0000'];
+    for (let i = 0; i < 180; i++) {
+      const angle = (Math.PI * 2 * i) / 180;
+      const speed = 80 + Math.random() * 400;
+      this.nukeParticles.push({
+        x: CANVAS_WIDTH / 2,
+        y: CANVAS_HEIGHT / 2,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        r: 4 + Math.random() * 14,
+        alpha: 1.0,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+    this.notifyStateChange();
+  }
+
   private loop = (time: number) => {
     const dt = (time - this.lastTime) / 1000; // Delta time in seconds
     this.lastTime = time;
@@ -199,6 +234,22 @@ export class GameEngine {
 
     if (this.state.phase !== 'GAME_OVER') {
       this.animationId = requestAnimationFrame(this.loop);
+    }
+    
+    // Update nuke explosion particles
+    if (this.nukeActive) {
+      this.nukeFlashAlpha = Math.max(0, this.nukeFlashAlpha - 0.04);
+      let allDead = true;
+      for (const p of this.nukeParticles) {
+        p.x += p.vx * 0.016;
+        p.y += p.vy * 0.016;
+        p.vx *= 0.96;
+        p.vy *= 0.96;
+        p.alpha -= 0.012;
+        if (p.alpha > 0) allDead = false;
+      }
+      this.nukeParticles = this.nukeParticles.filter(p => p.alpha > 0);
+      if (allDead && this.nukeFlashAlpha <= 0) this.nukeActive = false;
     }
   };
 
@@ -449,6 +500,7 @@ export class GameEngine {
     this.drawTowers();
     this.drawEnemies();
     this.drawBullets();
+    this.drawNukeEffect();
   }
 
   private drawGrid() {
@@ -592,6 +644,59 @@ export class GameEngine {
       this.ctx.arc(bullet.x, bullet.y, 3, 0, Math.PI * 2);
       this.ctx.fill();
       this.ctx.shadowBlur = 0;
+    }
+  }
+
+  private drawNukeEffect() {
+    if (!this.nukeActive && this.nukeFlashAlpha <= 0 && this.nukeParticles.length === 0) return;
+
+    // White flash overlay
+    if (this.nukeFlashAlpha > 0) {
+      this.ctx.fillStyle = `rgba(255, 200, 100, ${this.nukeFlashAlpha})`;
+      this.ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
+
+    // Draw explosion particles
+    for (const p of this.nukeParticles) {
+      this.ctx.save();
+      this.ctx.globalAlpha = Math.max(0, p.alpha);
+      this.ctx.shadowBlur = 20;
+      this.ctx.shadowColor = p.color;
+      this.ctx.fillStyle = p.color;
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      this.ctx.fill();
+      this.ctx.restore();
+    }
+
+    // Draw mushroom cloud core (ring expanding)
+    if (this.nukeFlashAlpha > 0.3) {
+      const progress = 1 - this.nukeFlashAlpha;
+      const radius = progress * 350;
+      const ringAlpha = Math.max(0, this.nukeFlashAlpha - 0.3);
+      this.ctx.save();
+      this.ctx.globalAlpha = ringAlpha * 0.8;
+      this.ctx.strokeStyle = '#ff8c00';
+      this.ctx.lineWidth = 12;
+      this.ctx.shadowBlur = 30;
+      this.ctx.shadowColor = '#ff4500';
+      this.ctx.beginPath();
+      this.ctx.arc(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, radius, 0, Math.PI * 2);
+      this.ctx.stroke();
+      this.ctx.restore();
+    }
+
+    // NUCLEAR text
+    if (this.nukeFlashAlpha > 0.5) {
+      this.ctx.save();
+      this.ctx.globalAlpha = Math.min(1, this.nukeFlashAlpha * 1.5);
+      this.ctx.fillStyle = '#ffffff';
+      this.ctx.font = 'bold 60px monospace';
+      this.ctx.textAlign = 'center';
+      this.ctx.shadowBlur = 30;
+      this.ctx.shadowColor = '#ff4500';
+      this.ctx.fillText('☢ NUCLEAR ☢', CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+      this.ctx.restore();
     }
   }
 }
