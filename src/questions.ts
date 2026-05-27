@@ -6,224 +6,224 @@ export interface Question {
 }
 
 export const questions: Question[] = [
-  {
+ {
     id: 1,
-    question: "我們的太陽系位於哪一個星系中？\nIn which galaxy is our Solar System located?",
+    question: "為什麼太空探索對人類很重要？\nWhy is space exploration important to humans?",
     options: [
-      "仙女座星系 (Andromeda Galaxy)",
-      "銀河系 (Milky Way Galaxy)",
-      "大麥哲倫星系 (Large Magellanic Cloud)",
-      "黑眼星系 (Black Eye Galaxy)"
-    ],
-    correctAnswerIndex: 1
-  },
-  {
-    id: 2,
-    question: "下列哪一種星體會自行發光發熱？\nWhich type of celestial body gives off heat and light?",
-    options: [
-      "行星 (Planet)",
-      "衛星 (Satellite)",
-      "恆星 (Star)",
-      "小行星 (Asteroid)"
+      "為了尋找外星人 (To find aliens)",
+      "為了在太空建遊樂園 (To build amusement parks in space)",
+      "為了尋找其他可供人類居住的星體 (To find other celestial bodies for humans to live on)",
+      "為了丟棄地球的垃圾 (To throw away Earth's garbage)"
     ],
     correctAnswerIndex: 2
   },
   {
-    id: 3,
-    question: "太陽系中，哪一個是最小的行星？\nWhich is the smallest planet in the Solar System?",
+    id: 2,
+    question: "中國古代人使用什麼儀器來測量天體的位置？\nWhat instrument did ancient Chinese people use to measure the position of celestial bodies?",
     options: [
-      "火星 (Mars)",
-      "水星 (Mercury)",
-      "金星 (Venus)",
-      "地球 (Earth)"
+      "日晷 (Sundial)",
+      "渾天儀 (Armillary sphere)",
+      "指南針 (Compass)",
+      "折射望遠鏡 (Refracting telescope)"
+    ],
+    correctAnswerIndex: 1
+  },
+  {
+    id: 3,
+    question: "哪位科學家根據光的反射原理，製造了便宜又輕巧的反射望遠鏡？\nWhich scientist made a cheap and light reflecting telescope based on the reflection of light?",
+    options: [
+      "伽利略 (Galileo)",
+      "牛頓 (Newton)",
+      "雷伯 (Reber)",
+      "哈勃 (Hubble)"
     ],
     correctAnswerIndex: 1
   },
   {
     id: 4,
-    question: "木星和火星之間主要分佈著什麼天體？\nWhat celestial bodies are mostly found between Mars and Jupiter?",
+    question: "射電望遠鏡的主要特徵是什麼？\nWhat is the main feature of a radio telescope?",
     options: [
-      "彗星 (Comets)",
-      "小行星 (Asteroids)",
-      "衛星 (Satellites)",
-      "恆星 (Stars)"
+      "它使用透鏡來折射光線 (It uses lenses to bend light)",
+      "它在地球大氣層外圍繞地球運行 (It orbits the Earth above the atmosphere)",
+      "它的天線接收來自天體的無線電波 (Its antenna receives radio waves from celestial bodies)",
+      "它只用來觀察太陽 (It only observes the Sun)"
+    ],
+    correctAnswerIndex: 2
+  },
+  {
+    id: 5,
+    question: "為什麼哈勃太空望遠鏡要放置在地球大氣層之上？\nWhy is the Hubble Space Telescope placed above the Earth's atmosphere?",
+    options: [
+      "為了更接近星星 (To be closer to the stars)",
+      "為了拍攝清晰的天體影像 (To take clear images of celestial bodies)",
+      "為了接收更多陽光 (To receive more sunlight)",
+      "為了避開地球引力 (To avoid Earth's gravity)"
     ],
     correctAnswerIndex: 1
   },
   {
-    id: 5,
-    question: "哪一顆行星表面呈現紅色，且到處都是沙丘？\nWhich planet has a reddish surface and sand dunes everywhere?",
-    options: [
-      "火星 (Mars)",
-      "木星 (Jupiter)",
-      "土星 (Saturn)",
-      "金星 (Venus)"
-    ],
-    correctAnswerIndex: 0
-  },
-  {
     id: 6,
-    question: "地球的衛星是下列哪一個？\nWhich of the following is the satellite of the Earth?",
+    question: "2013年2月15日，什麼物體墜落俄羅斯造成嚴重破壞並導致多人受傷？\nWhat caused severe damage and injured many people in Russia on 15 February 2013?",
     options: [
-      "太陽 (Sun)",
-      "火星 (Mars)",
-      "月球 (Moon)",
-      "哈雷彗星 (Halley's Comet)"
+      "返回地球的太空船 (A returning spacecraft)",
+      "人造衛星 (An artificial satellite)",
+      "隕石 (A meteorite)",
+      "太空穿梭機 (A space shuttle)"
     ],
     correctAnswerIndex: 2
   },
   {
     id: 7,
-    question: "下列關於行星的描述，哪一項是正確的？\nWhich of the following sentences about planets is correct?",
+    question: "火箭升空是基於什麼科學原理？\nWhat scientific principle explains how a rocket takes off?",
     options: [
-      "它們會自己發光 (They give off light.)",
-      "它們圍繞恆星公轉 (They revolve around stars.)",
-      "它們圍繞衛星公轉 (They revolve around satellites.)",
-      "它們由冰塊組成 (They are made of ice.)"
-    ],
-    correctAnswerIndex: 1
-  },
-  {
-    id: 8,
-    question: "哪一顆行星擁有寬闊且明亮的星環？\nWhich planet has wide and bright rings?",
-    options: [
-      "天王星 (Uranus)",
-      "木星 (Jupiter)",
-      "土星 (Saturn)",
-      "海王星 (Neptune)"
-    ],
-    correctAnswerIndex: 2
-  },
-  {
-    id: 9,
-    question: "太陽系八大行星中，哪一顆距離太陽最遠？\nWhich of the eight planets in the Solar System is the farthest from the Sun?",
-    options: [
-      "海王星 (Neptune)",
-      "天王星 (Uranus)",
-      "木星 (Jupiter)",
-      "土星 (Saturn)"
+      "作用力與反作用力 (Action and reaction)",
+      "摩擦力 (Friction)",
+      "磁力 (Magnetic force)",
+      "空氣阻力 (Air resistance)"
     ],
     correctAnswerIndex: 0
   },
   {
-    id: 10,
-    question: "彗星接近太陽時會發生什麼事？\nWhat happens when a comet gets close to the Sun?",
+    id: 8,
+    question: "當火箭燃料燃燒時，大量氣體向哪個方向噴出以推動火箭向上？\nWhen a rocket's fuel burns, in which direction does the large amount of gas rush to push the rocket upwards?",
     options: [
-      "它會結冰 (It freezes.)",
-      "它會變成恆星 (It turns into a star.)",
-      "它會受熱並拖著發光的長尾巴 (It heats up and shows a long glowing tail.)",
-      "它會停止移動 (It stops moving.)"
+      "向上 (Upwards)",
+      "向下 (Downwards)",
+      "向側面 (Sideways)",
+      "向內 (Inwards)"
+    ],
+    correctAnswerIndex: 1
+  },
+  {
+    id: 9,
+    question: "火箭發射過程中，助推器燃料耗盡後會怎樣？\nWhat happens to the rocket boosters after they run out of fuel during a launch?",
+    options: [
+      "它們會爆炸 (They explode)",
+      "它們會變成太陽能板 (They turn into solar panels)",
+      "它們會被脫落/拋棄 (They are dropped)",
+      "它們會降落在月球上 (They land on the Moon)"
     ],
     correctAnswerIndex: 2
   },
   {
-    id: 11,
-    question: "地球大氣層主要由哪三種氣體組成？\nEarth's atmosphere is mainly made up of which three gases?",
+    id: 10,
+    question: "第二節火箭脫落後，太空船會展開什麼以便在太空中運作？\nWhat does a spacecraft spread out to operate in space after the second stage of the rocket is dropped?",
     options: [
-      "氫氣、氧氣、二氧化碳 (Hydrogen, oxygen, carbon dioxide)",
-      "氮氣、氧氣、二氧化碳 (Nitrogen, oxygen, carbon dioxide)",
-      "氦氣、氮氣、氧氣 (Helium, nitrogen, oxygen)",
-      "甲烷、氧氣、二氧化碳 (Methane, oxygen, carbon dioxide)"
+      "降落傘 (Parachutes)",
+      "天線 (Antennas)",
+      "機翼 (Wings)",
+      "太陽能板 (Solar panels)"
+    ],
+    correctAnswerIndex: 3
+  },
+  {
+    id: 11,
+    question: "太空船的返回艙如何安全降落在地球上？\nHow does the capsule of a spacecraft safely land on Earth?",
+    options: [
+      "它使用火箭助推器 (It uses rocket boosters)",
+      "打開降落傘並使用制動系統 (Parachutes open and it uses a braking system)",
+      "它像飛機一樣降落在跑道上 (It lands like an airplane on a runway)",
+      "它在地面上彈跳 (It bounces on the ground)"
     ],
     correctAnswerIndex: 1
   },
   {
     id: 12,
-    question: "哪一顆行星擁有最高的表面溫度？\nWhich planet has the highest surface temperature?",
+    question: "哪個國家在1957年發射了全球第一枚人造衛星？\nWhich country launched the world's first artificial satellite in 1957?",
     options: [
-      "水星 (Mercury)",
-      "金星 (Venus)",
-      "火星 (Mars)",
-      "木星 (Jupiter)"
+      "美國 (The United States)",
+      "前蘇聯 (The former Soviet Union)",
+      "中國 (China)",
+      "日本 (Japan)"
     ],
     correctAnswerIndex: 1
   },
   {
     id: 13,
-    question: "太陽系八大行星中，哪一顆的體積最大且自轉最快？\nWhich is the largest planet and has the fastest rotation in the Solar System?",
+    question: "兩位美國太空人是在哪一年成為首批登陸月球的人類？\nIn what year did two American astronauts become the first humans to walk on the Moon?",
     options: [
-      "土星 (Saturn)",
-      "木星 (Jupiter)",
-      "天王星 (Uranus)",
-      "地球 (Earth)"
+      "1957",
+      "1961",
+      "1969",
+      "1981"
     ],
-    correctAnswerIndex: 1
+    correctAnswerIndex: 2
   },
   {
     id: 14,
-    question: "彗星是由什麼物質組成的？\nWhat is a comet made of?",
+    question: "1981年美國發射了世界上第一個什麼設備？\nWhat did the US launch in 1981 that was the world's first of its kind?",
     options: [
-      "完全由金屬組成 (Only metal)",
-      "只有氣體 (Only gas)",
-      "冰、岩石和塵埃的混合物 (A chunk of ice, rock and dust)",
-      "液態水和泥土 (Liquid water and soil)"
+      "人造衛星 (Artificial satellite)",
+      "太空實驗室 (Space laboratory)",
+      "可重複使用的太空穿梭機 (Reusable space shuttle)",
+      "月球車 (Lunar rover)"
     ],
     correctAnswerIndex: 2
   },
   {
     id: 15,
-    question: "哪一顆行星表面大部分被海洋覆蓋，且有生物居住？\nWhich planet is mostly covered with oceans and has living things?",
+    question: "哪個由多國建造的設施於2000年開始運作，讓太空人能在太空中停留更長時間？\nWhat facility came into operation in 2000, built by a number of countries, allowing astronauts to stay in space longer?",
     options: [
-      "金星 (Venus)",
-      "地球 (Earth)",
-      "火星 (Mars)",
-      "木星 (Jupiter)"
-    ],
-    correctAnswerIndex: 1
-  },
-  {
-    id: 16,
-    question: "衛星 (Satellites) 會圍繞什麼天體公轉？\nWhat celestial bodies do satellites revolve around?",
-    options: [
-      "行星 (Planets)",
-      "恆星 (Stars)",
-      "小行星 (Asteroids)",
-      "彗星 (Comets)"
+      "國際太空站 (International Space Station)",
+      "天文公園 (Astropark)",
+      "太空實驗室 (Spacelab)",
+      "歐洲太空總署 (European Space Agency)"
     ],
     correctAnswerIndex: 0
   },
   {
-    id: 17,
-    question: "下列哪一個組合構成了「太陽系 (Solar System)」？\nWhat makes up the Solar System?",
+    id: 16,
+    question: "中國在哪一年成功發射首艘載人太空船？\nWhen did China successfully launch its first manned spacecraft?",
     options: [
-      "只有太陽和地球 (Only the Sun and the Earth)",
-      "所有宇宙中的星系 (All galaxies in the universe)",
-      "太陽、八大行星及其衛星 (The Sun, the eight planets and their satellites)",
-      "只有恆星和彗星 (Only stars and comets)"
+      "1970",
+      "2000",
+      "2003",
+      "2013"
     ],
     correctAnswerIndex: 2
   },
   {
-    id: 18,
-    question: "最著名的彗星之一叫做什麼名字？\nWhat is one of the most famous comets called?",
+    id: 17,
+    question: "2013年中國在太空探索方面取得了什麼重大成就？\nWhat major achievement did China accomplish in space exploration in 2013?",
     options: [
-      "安德羅美達彗星 (Andromeda Comet)",
-      "哈雷彗星 (Halley's Comet)",
-      "阿波羅彗星 (Apollo Comet)",
-      "伽利略彗星 (Galileo Comet)"
+      "將第一個人類送入太空 (Sent the first human into space)",
+      "首部月球車登陸月球 (First lunar rover landed on the Moon)",
+      "發射首枚人造衛星 (Launched its first artificial satellite)",
+      "太空船降落在小行星上 (Landed a spacecraft on an asteroid)"
     ],
     correctAnswerIndex: 1
   },
   {
-    id: 19,
-    question: "小行星 (Asteroids) 又被稱為什麼？\nWhat are asteroids also called?",
+    id: 18,
+    question: "哪個國家的無人太空船在2014年成功進入火星軌道？\nWhich country's unmanned spacecraft was put into orbit around Mars in 2014?",
     options: [
-      "小恆星 (Minor stars)",
-      "小行星 (Minor planets)",
-      "流星 (Meteors)",
-      "小衛星 (Minor satellites)"
+      "印度 (India)",
+      "日本 (Japan)",
+      "中國 (China)",
+      "美國 (The United States)"
+    ],
+    correctAnswerIndex: 0
+  },
+  {
+    id: 19,
+    question: "人造衛星如何幫助地球上的人類？\nWhat do artificial satellites do to help us on Earth?",
+    options: [
+      "它們為火箭提供燃料 (They provide fuel for rockets)",
+      "它們監測北極海冰等變化 (They monitor changes like Arctic sea ice)",
+      "它們運送人類去其他行星 (They carry humans to other planets)",
+      "它們收集太空垃圾 (They collect space garbage)"
     ],
     correctAnswerIndex: 1
   },
   {
     id: 20,
-    question: "太陽系八大行星中，距離太陽由近到遠排列，第三顆是哪一顆？\nWhich is the 3rd planet from the Sun in the Solar System?",
+    question: "根據教材，你可以和家人去香港的哪裡了解更多太空探索的知識？\nAccording to the textbook, where can you go with your family in Hong Kong to learn more about space exploration?",
     options: [
-      "金星 (Venus)",
-      "火星 (Mars)",
-      "地球 (Earth)",
-      "木星 (Jupiter)"
+      "香港科學館 (Hong Kong Science Museum)",
+      "香港太空館 (Hong Kong Space Museum)",
+      "香港文化博物館 (Hong Kong Heritage Museum)",
+      "天文公園 (Astropark)"
     ],
-    correctAnswerIndex: 2
+    correctAnswerIndex: 1
   }
 ];
