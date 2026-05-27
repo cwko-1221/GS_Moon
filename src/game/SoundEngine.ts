@@ -12,14 +12,21 @@ export class SoundEngine {
   }
 
   private ensureContext() {
-    if (!this.ctx) {
-      this.ctx = new AudioContext();
-      this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.value = 0.3;
-      this.masterGain.connect(this.ctx.destination);
-    }
-    if (this.ctx.state === 'suspended') {
-      this.ctx.resume();
+    try {
+      if (!this.ctx) {
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        if (AudioContextClass) {
+          this.ctx = new AudioContextClass();
+          this.masterGain = this.ctx.createGain();
+          this.masterGain.gain.value = this.muted ? 0 : 0.3;
+          this.masterGain.connect(this.ctx.destination);
+        }
+      }
+      if (this.ctx && this.ctx.state === 'suspended') {
+        this.ctx.resume().catch(e => console.warn('AudioContext resume failed:', e));
+      }
+    } catch (err) {
+      console.warn('Failed to initialize AudioContext:', err);
     }
   }
 

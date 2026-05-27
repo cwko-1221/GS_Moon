@@ -19,6 +19,8 @@ export class GameEngine {
   private nukeParticles: { x: number; y: number; vx: number; vy: number; r: number; alpha: number; color: string }[] = [];
   private nukeFlashAlpha: number = 0;
   private nukeActive: boolean = false;
+  private questionModalOpen: boolean = false;
+  private buildTimeAccumulator: number = 0;
 
   constructor(ctx: CanvasRenderingContext2D, onStateChange: (state: GameState) => void) {
     this.ctx = ctx;
@@ -31,6 +33,7 @@ export class GameEngine {
       enemies: [],
       towers: [],
       bullets: [],
+      buildTimeLeft: 30,
     };
 
     const imageNames = ['enemy', 'enemy_fast', 'enemy_tank', 'enemy_boss', 'basic_tower', 'laser_tower', 'sniper_tower', 'plasma_tower'];
@@ -101,9 +104,15 @@ export class GameEngine {
     this.notifyStateChange();
   }
 
+  public setQuestionModalOpen(open: boolean) {
+    this.questionModalOpen = open;
+  }
+
   public startWave() {
     if (this.state.phase === 'BUILDING') {
       this.state.phase = 'COMBAT';
+      this.state.buildTimeLeft = 30;
+      this.buildTimeAccumulator = 0;
       
       if (this.state.wave % 5 === 0) {
         this.enemiesToSpawn = 1; // Boss wave
@@ -260,6 +269,19 @@ export class GameEngine {
       this.updateTowers();
       this.updateBullets(dt);
       this.checkWaveEnd();
+    } else if (this.state.phase === 'BUILDING') {
+      if (!this.questionModalOpen) {
+        this.buildTimeAccumulator += dt;
+        if (this.buildTimeAccumulator >= 1.0) {
+          this.buildTimeAccumulator -= 1.0;
+          this.state.buildTimeLeft = Math.max(0, this.state.buildTimeLeft - 1);
+          if (this.state.buildTimeLeft === 0) {
+            this.startWave();
+          } else {
+            this.notifyStateChange();
+          }
+        }
+      }
     }
   }
 
@@ -481,6 +503,8 @@ export class GameEngine {
     if (this.enemiesToSpawn === 0 && this.state.enemies.length === 0 && this.state.phase === 'COMBAT') {
       this.state.phase = 'BUILDING';
       this.state.wave++;
+      this.state.buildTimeLeft = 30;
+      this.buildTimeAccumulator = 0;
       this.notifyStateChange();
     }
   }

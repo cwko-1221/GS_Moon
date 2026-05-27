@@ -21,6 +21,7 @@ function App() {
     enemies: [],
     towers: [],
     bullets: [],
+    buildTimeLeft: 30,
   });
   
   const [showQuestion, setShowQuestion] = useState(false);
@@ -31,9 +32,9 @@ function App() {
   const [selectedTowerType, setSelectedTowerType] = useState<'BASIC' | 'LASER' | 'SNIPER' | 'PLASMA' | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   
-  const [buildTimeLeft, setBuildTimeLeft] = useState(30);
   const [isMuted, setIsMuted] = useState(false);
   const [selectedTowerId, setSelectedTowerId] = useState<string | null>(null);
+  const [consecutiveWrongAnswers, setConsecutiveWrongAnswers] = useState(0);
 
   const selectedTower: Tower | undefined = gameState.towers.find(t => t.id === selectedTowerId);
 
@@ -83,34 +84,15 @@ function App() {
     return () => window.removeEventListener('resize', updateScale);
   }, []);
 
-  // Timer for building phase
-  useEffect(() => {
-    let timerId: ReturnType<typeof setInterval>;
-    if (gameState?.phase === 'BUILDING') {
-      timerId = setInterval(() => {
-        setBuildTimeLeft((prev) => {
-          if (prev <= 1) {
-            engineRef.current?.startWave();
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } else {
-      setBuildTimeLeft(30);
-    }
-    return () => {
-      if (timerId) clearInterval(timerId);
-    };
-  }, [gameState?.phase]);
-
   // Handle Question Logic
   const handleEarnMoney = () => {
     if (gameState?.phase === 'GAME_OVER') return;
     
+    // Pause building countdown timer when question modal is open
+    engineRef.current?.setQuestionModalOpen(true);
+    
     // Pick a random question
     const q = questions[Math.floor(Math.random() * questions.length)];
-    // Optionally shuffle options here if desired, but we'll keep it simple
     setCurrentQuestion(q);
     setSelectedOption(null);
     setQuestionResult(null);
@@ -123,18 +105,35 @@ function App() {
     setSelectedOption(index);
     if (index === currentQuestion.correctAnswerIndex) {
       setQuestionResult('correct');
+      setConsecutiveWrongAnswers(0); // Reset consecutive wrong answers count
       soundEngine.playCorrectAnswer();
       setTimeout(() => {
         engineRef.current?.addMoney(50); // Reward for correct answer
+        engineRef.current?.setQuestionModalOpen(false); // Resume countdown timer
         setShowQuestion(false);
       }, 1500);
     } else {
       setQuestionResult('wrong');
       soundEngine.playWrongAnswer();
-      setTimeout(() => {
-        engineRef.current?.addMoney(-50); // Penalty for wrong answer
-        setShowQuestion(false);
-      }, 2000);
+      const nextWrong = consecutiveWrongAnswers + 1;
+      setConsecutiveWrongAnswers(nextWrong);
+      
+      if (nextWrong >= 4) {
+        // Trigger auto nuclear bomb!
+        setTimeout(() => {
+          engineRef.current?.addMoney(-50); // Penalty for wrong answer
+          engineRef.current?.triggerNuclearBomb();
+          setConsecutiveWrongAnswers(0); // Reset count
+          engineRef.current?.setQuestionModalOpen(false); // Resume countdown
+          setShowQuestion(false);
+        }, 2000);
+      } else {
+        setTimeout(() => {
+          engineRef.current?.addMoney(-50); // Penalty for wrong answer
+          engineRef.current?.setQuestionModalOpen(false); // Resume countdown
+          setShowQuestion(false);
+        }, 2000);
+      }
     }
   };
 
@@ -303,7 +302,17 @@ function App() {
                 })}
               </div>
               {questionResult === 'correct' && <div style={{ color: '#22c55e', marginTop: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>答對了！獲得 50 資金</div>}
-              {questionResult === 'wrong' && <div style={{ color: '#ef4444', marginTop: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>答錯了！-50 資金 答案是：{currentQuestion.options[currentQuestion.correctAnswerIndex]}</div>}
+              {questionResult === 'wrong' && (
+                <div style={{ color: '#ef4444', marginTop: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>
+                  答錯了！-50 資金 答案是：{currentQuestion.options[currentQuestion.correctAnswerIndex]}
+                  <div style={{ color: '#f87171', fontSize: '1rem', marginTop: '0.5rem', fontWeight: 'bold' }}>
+                    {consecutiveWrongAnswers >= 4 
+                      ? '☢️ 已連續答錯 4 題！即將啟動自動核彈防衛機制！' 
+                      : `⚠️ 目前已連續答錯 ${consecutiveWrongAnswers} 題 (連錯 4 題將自動引爆核彈)`
+                    }
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -346,7 +355,7 @@ function App() {
             </button>
             {gameState.phase === 'BUILDING' && (
               <button className="btn btn-primary" onClick={() => engineRef.current?.startWave()}>
-                &gt;&gt; 開始第 {gameState.wave} 波 ({buildTimeLeft}秒) &lt;&lt;
+                &gt;&gt; 開始第 {gameState.wave} 波 ({gameState.buildTimeLeft}秒) &lt;&lt;
               </button>
             )}
             {gameState.phase === 'COMBAT' && (

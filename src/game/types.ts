@@ -51,6 +51,7 @@ export interface GameState {
   enemies: Enemy[];
   towers: Tower[];
   bullets: Bullet[];
+  buildTimeLeft: number;
 }
 
 export const TOWER_TYPES = {
