@@ -132,6 +132,7 @@ function App() {
       setQuestionResult('wrong');
       soundEngine.playWrongAnswer();
       setTimeout(() => {
+        engineRef.current?.addMoney(-50); // Penalty for wrong answer
         setShowQuestion(false);
       }, 2000);
     }
@@ -302,7 +303,7 @@ function App() {
                 })}
               </div>
               {questionResult === 'correct' && <div style={{ color: '#22c55e', marginTop: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>答對了！獲得 50 資金</div>}
-              {questionResult === 'wrong' && <div style={{ color: '#ef4444', marginTop: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>答錯了！答案是：{currentQuestion.options[currentQuestion.correctAnswerIndex]}</div>}
+              {questionResult === 'wrong' && <div style={{ color: '#ef4444', marginTop: '1rem', fontSize: '1.2rem', fontWeight: 'bold' }}>答錯了！-50 資金 答案是：{currentQuestion.options[currentQuestion.correctAnswerIndex]}</div>}
             </div>
           </div>
         )}
